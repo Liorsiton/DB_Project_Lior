@@ -1,16 +1,18 @@
 package Dev_Course.DB_Project1;
 
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class ChainsManager {
 	Scanner scan = new Scanner(System.in);
+	Dao dao =new Dao();
 	
 	
 
 	
-	public void init(){
+	public void init() throws SQLException{
 		
 		while(true){
 			System.out.println("please choose the following DB actions or type q for quit");
@@ -63,9 +65,9 @@ public class ChainsManager {
 
 
 
-	private void selectShopDetails() {
+	private void selectShopDetails() throws SQLException {
 		System.out.println("list of all shops");
-		List<Shop> shops = Dao.getAllShops();
+		List<Shop> shops = dao.getAllShops();
 		for(Shop sh : shops){
 			System.out.println(sh.getName() + "," +sh.getChain().getName() + "," + sh.getMall().getName());
 		}
@@ -75,11 +77,11 @@ public class ChainsManager {
 
 
 
-	private void selectEmployeeInChain() {
+	private void selectEmployeeInChain() throws SQLException {
 		System.out.println("Please enter the chain name");
 		String name = scan.nextLine();
-		int chainId = Dao.getChainByName(name);
-		List<Employee> employees = Dao.getAllEmployeeInChain(chainId);
+		int chainId = dao.getChainByName(name);
+		List<Employee> employees = dao.getAllEmployeeInChain(chainId);
 		for(Employee emp : employees){
 			System.out.println(emp.getName());
 		}
@@ -89,12 +91,12 @@ public class ChainsManager {
 
 
 
-	private void selectShopsInMallGroup() {
+	private void selectShopsInMallGroup() throws SQLException {
 		System.out.println("Please enter the Mall Group name");
 		String name= scan.nextLine();
-		int mallGroupId = Dao.getMallGroupByName(name);
-		int mallId = Dao.getMallIDByGroupMall(mallGroupId);
-		List<Shop> shops = Dao.getAllShopsInMall(mallId);
+		int mallGroupId = dao.getMallGroupByName(name);
+		int mallId = dao.getMallIDByGroupMall(mallGroupId);
+		List<Shop> shops = dao.getAllShopsInMall(mallId);
 		for(Shop sh : shops){
 			System.out.println(sh.getName());
 		}
@@ -106,12 +108,12 @@ public class ChainsManager {
 
 
 
-	private void selectShopsinMall() {
+	private void selectShopsinMall() throws SQLException {
 		String mallName;
 		System.out.println("Please enter mall name");
 		mallName=scan.nextLine();
-		int mallId=Dao.getMallByName(mallName);
-		List<Shop> shops = Dao.getAllShopsInMall(mallId);
+		int mallId=dao.getMallByName(mallName);
+		List<Shop> shops = dao.getAllShopsInMall(mallId);
 		System.out.println("The shops in mall "+mallName + "are:");
 		for(Shop sh : shops){
 			System.out.println(sh.getName());
@@ -122,13 +124,13 @@ public class ChainsManager {
 
 
 
-	private void addEmployeeToChain(boolean isShopEmployee) {
+	private void addEmployeeToChain(boolean isShopEmployee) throws SQLException {
 		String employeeName;
 		Chain employeeChain=null;
 		Shop EmployeeShop=null;
 		System.out.println("Please enter the employee name");
 		employeeName = scan.nextLine();
-		List<Chain> chains =Dao.getAllChains();
+		List<Chain> chains =dao.getAllChains();
 		for(Chain c : chains){
 			System.out.println(c.getName());			
 		}
@@ -140,7 +142,7 @@ public class ChainsManager {
 			}
 		}
 		if(isShopEmployee){
-			List<Shop> shops = Dao.getAllShopsInChain(employeeChain.getId());
+			List<Shop> shops = dao.getAllShopsInChain(employeeChain.getId());
 			for(Shop sh:shops){
 				System.out.println(sh.getName());
 			}
@@ -152,10 +154,10 @@ public class ChainsManager {
 					EmployeeShop=sh;
 				}
 			}
-			Dao.createEmployee(employeeName, employeeChain, EmployeeShop);
+			dao.createEmployee(employeeName, employeeChain, EmployeeShop);
 		}
 		else{
-			Dao.createEmployee(employeeName, employeeChain, null);
+			dao.createEmployee(employeeName, employeeChain, null);
 		}
 		
 		
@@ -165,34 +167,34 @@ public class ChainsManager {
 
 
 
-	private void addShopToChain() {
+	private void addShopToChain() throws SQLException {
 		String chainName,mallName;
 		int chainId,mallId;
 		//assume we have shops only in malls
 		System.out.println("please enter the chain name");
 		chainName = scan.next();
-		chainId=Dao.getChainByName(chainName);
+		chainId=dao.getChainByName(chainName);
 		System.out.println("please enter the mall name");
 		mallName = scan.next();
-		mallId=Dao.getMallByName(mallName);
+		mallId=dao.getMallByName(mallName);
 		System.out.println("please enter the shop number in the mall");
 		int shopNumberInMall = scan.nextInt();				
 		System.out.println("Please enter shop name");
 		String shopName = scan.next();
-		Dao.createShopInMall(shopName,chainId,mallId,shopNumberInMall);
+		dao.createShopInMall(shopName,chainId,mallId,shopNumberInMall);
 		
 	}
 
 
 
 
-	private void addNewChain() {
+	private void addNewChain() throws SQLException {
 		String chainName;
 		System.out.println("please enter the chain name");
 		if(scan.hasNext()){
 			chainName = scan.nextLine();
 			Chain ch = new Chain(chainName);
-			Dao.createChain(ch);
+			dao.createChain(ch);
 			
 		}
 		
