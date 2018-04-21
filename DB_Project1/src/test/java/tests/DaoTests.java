@@ -1,6 +1,6 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,8 +26,11 @@ public class DaoTests {
 	@Test
 	public void good_addChain() throws SQLException {
     	Dao dao = new Dao();
-    	Chain chain = new Chain("LivePerson");
-		assertEquals(1, dao.createChain(chain));
+    	String chainName = "LivePerson";
+    	Chain chain = new Chain(chainName);
+    	assertEquals(1,dao.createChain(chain));
+    	int id = dao.getChainByName(chainName);    	
+		assertNotNull(id);
 		
    }
 	
@@ -36,9 +39,11 @@ public class DaoTests {
 		Dao dao = new Dao();
 		Chain chain = new Chain("LivePerson");
 		assertEquals(1, dao.createChain(chain));
-		int idUp = dao.getChainByName("LivePerson");
-		assertEquals(1, dao.createShopInMall("LivePerson1", idUp, 1, 101));
-		
+		int chainId = dao.getChainByName("LivePerson");
+		int mallId= dao.getMallByName("Azrieli_TA");
+		assertEquals(1, dao.createShopInMall("LivePerson_AZ", mallId, 1, 101));
+		int shopID = dao.getShopByName("LivePerson_AZ");
+		assertNotNull(shopID);
    }
 	
 	@Test

@@ -13,21 +13,25 @@ public class ChainsManager {
 
 	
 	public void init() throws SQLException{
-		
-		while(true){
-			System.out.println("please choose the following DB actions or type q for quit");
+		String input="";
+		while(true){			
+			System.out.println("Please choose the following DB actions or type q for quit");
 			System.out.println("1.Add new chain");
-			System.out.println("2.Add a shop to a chain");
+			System.out.println("2.Add a shop to a chain in a mall");
 			System.out.println("3.Add employee to shop/group managment");
 			System.out.println("4.Present all shops that are in a certain Shopping Mall");
 			System.out.println("5.Present all shops that are in a certain Shopping Mall Group");
 			System.out.println("6.Present all Employees of a certain Chain");
 			System.out.println("7.Present all details of a Shop");
-			String input=scan.nextLine();
+			input=scan.nextLine();
+			if(input.equals("1")||input.equals("2")||input.equals("3")||input.equals("4")
+					||input.equals("5")||input.equals("6")||input.equals("7")||input.equals("q")){
+							
 				if(input.equals("1")){
 					addNewChain();
 				}
 				else if(input.equals("2")){
+					//TODO - add shop not in a mall
 					addShopToChain();
 				}
 				else if(input.equals("3")){
@@ -58,7 +62,10 @@ public class ChainsManager {
 					System.out.println("Quiting..");
 					break;
 				}
-
+			}
+			else{
+				System.out.println("The input entered is not legal.try again");
+			}
 		}
 	}
 

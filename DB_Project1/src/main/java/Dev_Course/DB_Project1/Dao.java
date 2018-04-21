@@ -24,6 +24,7 @@ public class Dao {
 	private final static String createShopInMall = "insert into shops(name,chain,mall,shop_number_in_mall) values(?,?,?,?)";
 	private final static String getMallByName = "select id from malls where name =?";
 	private final static String getChainByName = "select id from chains where name = ?";
+	private final static String getShopByName = "select id from shops where name = ?";
 	private final static String getMallGroupByName = "select id from mall_groups where name =?";
 	private final static String getMallIDByGroupMall = "select id from malls where mall_group =?";
 	private final static String getAllShopsInMall = "select id, name from shops where mall = ?";
@@ -91,6 +92,21 @@ public class Dao {
 		int id = 0;
 		Connection con = getCon();
 		try (PreparedStatement ps = con.prepareStatement(getChainByName)) {
+			ps.setString(1, Name);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				id = rs.getInt(1);
+			}
+		}
+
+		return id;
+		
+	}
+	
+	public int getShopByName(String Name) throws SQLException {
+		int id = 0;
+		Connection con = getCon();
+		try (PreparedStatement ps = con.prepareStatement(getShopByName)) {
 			ps.setString(1, Name);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
