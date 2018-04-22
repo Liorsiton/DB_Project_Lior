@@ -1,0 +1,2 @@
+1.No add shop with address (only add shop to mall) 
+2.The DB connection user name and password are not in configuration file (hard coded )
